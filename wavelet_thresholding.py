@@ -27,14 +27,8 @@ def _sigma_est_dwt(detail_coeffs, distribution='Gaussian'):
     """
     # Consider regions with detail coefficients exactly zero to be masked out
     detail_coeffs = detail_coeffs[np.nonzero(detail_coeffs)]
-
-    if distribution.lower() == 'gaussian':
-        # 75th quantile of the underlying, symmetric noise distribution
-        denom = scipy.stats.norm.ppf(0.75)
-        sigma = np.median(np.abs(detail_coeffs)) / denom
-    else:
-        raise ValueError("Only Gaussian noise estimation is currently "
-                         "supported")
+    denom = scipy.stats.norm.ppf(0.75)
+    sigma = np.median(np.abs(detail_coeffs)) / denom
     return sigma
 
 
@@ -45,13 +39,7 @@ def _wavelet_threshold(image, wavelet, method=None, threshold=None,
     
     
     wavelet = pywt.Wavelet(wavelet)
-    if not wavelet.orthogonal:
-        warn(f'Wavelet thresholding was designed for '
-             f'use with orthogonal wavelets. For nonorthogonal '
-             f'wavelets such as {wavelet.name},results are '
-             f'likely to be suboptimal.')
-
-    # original_extent is used to workaround PyWavelets issue #80
+    # original_extent is used to workaround PyWavelets issue
     # odd-sized input results in an image with 1 extra sample after waverecn
     original_extent = tuple(slice(s) for s in image.shape)
 
@@ -59,8 +47,8 @@ def _wavelet_threshold(image, wavelet, method=None, threshold=None,
     if wavelet_levels is None:
         # Determine the maximum number of possible levels for image
         wavelet_levels = pywt.dwtn_max_level(image.shape, wavelet)
-        print(image.shape)
-        # Skip coarsest wavelet scales (see Notes in docstring).
+        
+        # Skip coarsest wavelet scales.
         wavelet_levels = max(wavelet_levels - 3, 1)
 
     coeffs = pywt.wavedecn(image, wavelet=wavelet, level=wavelet_levels)
@@ -72,24 +60,17 @@ def _wavelet_threshold(image, wavelet, method=None, threshold=None,
         detail_coeffs = dcoeffs[-1]['d' * image.ndim]
         sigma = _sigma_est_dwt(detail_coeffs, distribution='Gaussian')
 
-    if method is not None and threshold is not None:
-        warn(f'Thresholding method {method} selected. The '
-             f'user-specified threshold will be ignored.')
-
     if threshold is None:
         var = sigma**2
-        if method is None:
-            raise ValueError(
-                "If method is None, a threshold must be provided.")
-        elif method == "BayesShrink":
-            # The BayesShrink thresholds from [1]_ in docstring
+        
+        if method == "BayesShrink":
+            # The BayesShrink thresholds
             threshold = [{key: _bayes_thresh(level[key], var) for key in level}
                          for level in dcoeffs]
         elif method == "VisuShrink":
-            # The VisuShrink thresholds from [2]_ in docstring
+            # The VisuShrink thresholds
             threshold = _universal_thresh(image, sigma)
-        else:
-            raise ValueError(f'Unrecognized method: {method}')
+        
 
     if np.isscalar(threshold):
         # A single threshold for all coefficient arrays
@@ -104,5 +85,6 @@ def _wavelet_threshold(image, wavelet, method=None, threshold=None,
                                                 mode=mode) for key in level}
                            for thresh, level in zip(threshold, dcoeffs)]
     denoised_coeffs = [coeffs[0]] + denoised_detail
+    #return reconstructed wavelet
     return pywt.waverecn(denoised_coeffs, wavelet)[original_extent]
 
