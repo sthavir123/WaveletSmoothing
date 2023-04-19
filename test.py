@@ -2,7 +2,7 @@ from logging import warn
 import numpy as np
 import pywt
 import scipy
-
+import scipy.stats
 def _bayes_thresh(details, var):
     """BayesShrink threshold for a zero-mean details coeff array."""
     # Equivalent to:  dvar = np.var(details) for 0-mean details array

@@ -11,12 +11,14 @@ def add_speckle_noise(img, mean=0, var=0.1):
 # Load color image
 img = cv2.imread('russia_org.jpg')
 #img = cv2.resize(img,[480,480])
-# Add speckle noise with mean=0 and variance=0.1
-noisy_img = add_speckle_noise(img, mean=0, var=0.5)
-k = int(noisy_img.shape[0]/2)
-t = int(noisy_img.shape[1]/2)
-noisy_img = cv2.resize(noisy_img,[k*2,t*2])
+# Add speckle noise with mean=0 and variance=0.1\\
+k = int(img.shape[0]/2)
+t = int(img.shape[1]/2)
 img = cv2.resize(img,[k*2,t*2])
+noisy_img = add_speckle_noise(img, mean=0, var=0.4)
+
+#noisy_img = cv2.resize(noisy_img,[k*2,t*2])
+
 # Display original and noisy image side by side
 #cv2.imshow('Original', img)
 cv2.imwrite('russia_var0.5.jpg', noisy_img.astype(np.uint8))
