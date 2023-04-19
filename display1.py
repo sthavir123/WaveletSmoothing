@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import filedialog
 from PIL import ImageTk, Image
-from p import main
+from main import main
 
 # Create the Tkinter window
 root = tk.Tk()
