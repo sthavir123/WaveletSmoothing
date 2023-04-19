@@ -1,45 +1,44 @@
+import cv2
 import numpy as np
 import pywt
-import cv2
 
-def wavelet_image_smoothing(image, level=1, wavelet='db4'):
-    # Convert the image to grayscale
-    #if len(image.shape) == 3:
-    #    image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        
-    # Apply the wavelet transform
-    coeffs = pywt.wavedec2(image, wavelet, level=level)
-    
-    # Set the smallest coefficients to zero
-    threshold = np.std(coeffs[-level]) * 10
-    new_coeffs = [coeffs[0]]
+def threshold(coeffs,thresh):
+    coeffs_thresh = list(coeffs)
+    coeffs_thresh[0] = coeffs[0]
     for i in range(1, len(coeffs)):
-        new_coeffs.append(tuple([np.where(np.abs(coeffs[i][j]) < threshold, 0, coeffs[i][j]) for j in range(len(coeffs[i]))]))
-    # Apply the inverse wavelet transform
-    smoothed_image = pywt.waverec2(new_coeffs, wavelet)
+        coeffs_thresh[i] = pywt.threshold(coeffs[i], thresh, mode='soft')
+    return coeffs_thresh
+
+def denoise (path,params):
+    # Load the noisy image
+    img = cv2.imread(path)
+
+    # Convert the image to YCbCr color space
+    img_ycrcb = cv2.cvtColor(img, cv2.COLOR_BGR2YCrCb)
+
+    # Split the channels
+    y, cr, cb = cv2.split(img_ycrcb)
+
+    # Apply wavelet transform on the Y channel
+    coeffs = pywt.dwt2(y, params[0])
+
+    # Threshold the high-frequency coefficients
+    coeffs_thresh = threshold(coeffs,params[1])
     
-    # Convert the image back to uint8 format
-    smoothed_image = np.uint8(smoothed_image)
-    
-    return smoothed_image
 
-# Read an image
-image = cv2.imread('Figure_1.png')
-image = cv2.resize(image,(500,500))
-#print(image[:,:,0].shape)
-# Smooth the image using wavelet transform
-smoothed_image1 = wavelet_image_smoothing(image[:,:,0], level=1, wavelet='db6')
-smoothed_image2 = wavelet_image_smoothing(image[:,:,1], level=1, wavelet='db6')
-smoothed_image3 = wavelet_image_smoothing(image[:,:,2], level=1, wavelet='db6')
-# Display the original and smoothed images
-#cv2.imshow('Original Image', image)
-cv2.imwrite('S1.png', smoothed_image1)
-cv2.imwrite('S2.png', smoothed_image2)
-cv2.imwrite('S3.png', smoothed_image3)
+    # Reconstruct the denoised Y channel
+    y_denoised = pywt.idwt2(coeffs_thresh, params[0])
 
-s_image = image
-s_image[:,:,0] = smoothed_image1
-s_image[:,:,1] = smoothed_image2
-s_image[:,:,2] = smoothed_image3
+    # Merge the channels
+    img_denoised_ycrcb = img
+    img_denoised_ycrcb[:,:,0] = y_denoised
+    img_denoised_ycrcb[:,:,1] = cr
+    img_denoised_ycrcb[:,:,2] = cb
 
-cv2.imwrite('S.png', s_image)
+    # Convert the image back to RGB color space
+    img_denoised = cv2.cvtColor(img_denoised_ycrcb, cv2.COLOR_YCrCb2BGR)
+    return img_denoised
+    # Display the denoised image
+cv2.imshow('Denoised image', denoise('Figure_1.png',['db4',20]))
+cv2.waitKey(0)
+cv2.destroyAllWindows()
