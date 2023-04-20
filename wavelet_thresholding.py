@@ -54,7 +54,7 @@ def _wavelet_threshold(image, wavelet, method=None, threshold=None,
     coeffs = pywt.wavedecn(image, wavelet=wavelet, level=wavelet_levels)
     # Detail coefficients at each decomposition level
     dcoeffs = coeffs[1:]
-
+    print(sigma)
     if sigma is None:
         # Estimate the noise via the method in [2]_
         detail_coeffs = dcoeffs[-1]['d' * image.ndim]
@@ -85,6 +85,6 @@ def _wavelet_threshold(image, wavelet, method=None, threshold=None,
                                                 mode=mode) for key in level}
                            for thresh, level in zip(threshold, dcoeffs)]
     denoised_coeffs = [coeffs[0]] + denoised_detail
-    #return reconstructed wavelet
+    print(method,mode,sigma,wavelet)
     return pywt.waverecn(denoised_coeffs, wavelet)[original_extent]
 

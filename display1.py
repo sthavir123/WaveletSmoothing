@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import filedialog
+from tkinter import filedialog,simpledialog
 from PIL import ImageTk, Image
 from main import main
 
@@ -8,6 +8,25 @@ root = tk.Tk()
 
 file_path = filedialog.askopenfilename(title="Select Image", filetypes=[("All files", "*")])
 print(file_path)
+
+
+method = simpledialog.askstring("Input", "Enter Method:", parent=root)
+mode = simpledialog.askstring("Input","Enter thresholding mode",parent=root)
+wavelet = simpledialog.askstring("Input", "Enter wavelet:", parent=root)
+levels = simpledialog.askinteger("Input", "Enter levels:", parent=root, minvalue=1)
+sigma = simpledialog.askfloat("Input", "Enter sigma:", parent=root, minvalue=0.0)
+
+# Print the values for testing
+print("Method:",method)
+print("Mode",mode)
+print("Wavelet:", wavelet)
+print("Levels:", levels)
+print("Sigma:", sigma)
+
+
+output_path = filedialog.asksaveasfilename(title="Save Output Image", filetypes=[("All files", "*")])
+
+print(output_path)
 #---------------------------------code starts--------------------------------------
 import numpy as np
 import pywt
@@ -17,26 +36,26 @@ import cv2
 
 #print(image[:,:,0].shape)
 # Smooth the image using wavelet transform
-smoothed_image = main(path=file_path,wavelet='db4',method='BayesShrink',levels=2,sigma=2)
+smoothed_image = main(path=file_path,wavelet=wavelet,method=method,levels=levels,sigma=sigma,mode=mode)
 # Display the original and smoothed images
 #cv2.imshow('Original Image', image)
-cv2.imwrite('result.png', smoothed_image)
+cv2.imwrite(output_path, smoothed_image)
 
 
 #----------------------------------code ends ---------------------
 
 
 # Set the window size
-window_width = 2200
-window_height = 1000
+window_width = smoothed_image.shape[0]
+window_height = smoothed_image.shape[1]
 root.geometry(f"{window_width}x{window_height}")
 
 # Load the images using PIL
 
-image = Image.open("result.png")
+image = Image.open(output_path)
 
 # Resize the images while maintaining their aspect ratio to fit the window
-image = image.resize((int(window_width/4), int(window_height)), Image.ANTIALIAS)
+image = image.resize((int(window_width), int(window_height)), Image.ANTIALIAS)
 
 
 # Convert the images to Tkinter-compatible format

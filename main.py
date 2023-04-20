@@ -4,7 +4,8 @@ import numpy as np
 import pywt
 from wavelet_thresholding import _wavelet_threshold
 
-def main(path,wavelet='db4',method='BiasShrink',levels=1,sigma=None,mode = 'soft'):
+def main(path,wavelet='db4',method='BayesShrink',levels=1,sigma=None,mode = 'soft'):
+    print(path,wavelet,method,sigma,mode)
     # Load the noisy image
     img = cv2.imread(path)
     
@@ -19,9 +20,9 @@ def main(path,wavelet='db4',method='BiasShrink',levels=1,sigma=None,mode = 'soft
     # Split the channels
     y, cr, cb = cv2.split(img_ycrcb)
     # apply wavelet threshold on each channel seperately
-    y_denoised  = _wavelet_threshold(image=y, wavelet=wavelet,method=method,wavelet_levels=levels,mode=mode)
-    cr_denoised = _wavelet_threshold(image=cr,wavelet=wavelet,method=method,wavelet_levels=levels,mode=mode)
-    cb_denoised = _wavelet_threshold(image=cb,wavelet=wavelet,method=method,wavelet_levels=levels,mode=mode)
+    y_denoised  = _wavelet_threshold(image=y, wavelet=wavelet,method=method,wavelet_levels=levels,mode=mode,sigma=sigma)
+    cr_denoised = _wavelet_threshold(image=cr,wavelet=wavelet,method=method,wavelet_levels=levels,mode=mode,sigma=sigma)
+    cb_denoised = _wavelet_threshold(image=cb,wavelet=wavelet,method=method,wavelet_levels=levels,mode=mode,sigma=sigma)
     
     #recontruct the image in YCrcCb color space
     img_denoised_ycrcb = np.zeros_like(img)
@@ -31,5 +32,10 @@ def main(path,wavelet='db4',method='BiasShrink',levels=1,sigma=None,mode = 'soft
     
     #convert back to RGB color spcae
     img_denoised = cv2.cvtColor(img_denoised_ycrcb, cv2.COLOR_YCrCb2BGR)
+    print(cv2.PSNR(img_denoised,img))
     return img_denoised
-    
+#testing    
+img = main("Figure_1.png",sigma=100)
+cv2.imshow('smoothed_img',img)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
