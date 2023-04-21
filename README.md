@@ -15,22 +15,22 @@ TO PRESENT:
 # Requirements:
 python3
 tkinter(for GUI)
-'''
+```
 sudo apt install python3-tk
-'''
+```
 ## Libraries
 numpy
-'''
+```
 pip install numpy
-'''
+```
 pywt
-'''
+```
 pip install PyWavelets
-'''
+```
 cv2
-'''
+```
 pip install opencv-python
-'''
+```
 math
 
 
