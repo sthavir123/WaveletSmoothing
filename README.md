@@ -38,3 +38,11 @@ python3 display1.py
 4. Select output path and file name
 5. Denoised image is displayed and gets stored at specified output path.
 
+## Refrences
+    .. [1] D. L. Donoho and I. M. Johnstone. "Ideal spatial adaptation
+       by wavelet shrinkage." Biometrika 81.3 (1994): 425-455.
+       :DOI:`10.1093/biomet/81.3.425`
+    .. [2] Chang, S. G., Yu, B., and Vetterli, M. (2000). Adaptive wavelet
+        thresholding for image denoising and compression. IEEE Trans. on
+        Image Proc., 9, 1532-1546
+    .. [3] Sachin, Mr & Assistant, Ruikar. (2010). Image Denoising Using Wavelet Transform. 
