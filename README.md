@@ -1,38 +1,40 @@
 # WaveletSmoothing
 GNR 602 Project :  Implement wavelet transform based image smoothing
 
-TO PRESENT:
-•   A 1-2-page writeup on the algorithm implemented including reference to book/paper
-
-•   Source code with documentation
-
-•   Executables
-
-•   Sample data
-
-•   Outputs with clear description of which parameters and input image were used to produce each output
-
-# Requirements:
-python3
-tkinter(for GUI)
+## Requirements
+* python3
+* tkinter(for GUI)
 ```
 sudo apt install python3-tk
 ```
-## Libraries
-numpy
+### Libraries
+
+1. numpy
 ```
 pip install numpy
 ```
-pywt
+2 .pywt
 ```
 pip install PyWavelets
 ```
-cv2
+3. cv2
 ```
 pip install opencv-python
 ```
-math
+4. math
 
-
-
+## Usage
+1. Run the program using the command
+```
+python3 display1.py
+```
+2. Select input file
+3. Give appropiate values for parameters asked by the popup windows
+  - Enter Method from ['UniversalThreshold','BayesShrink','VisuShrink']
+  - Enter Mode from ['soft','hard']
+  - Enter wavelet form ['db4','db6']
+  - Enter an integer value for wavelet decomposition levels.
+  - Enter a float value for sigma (standard deviation) of noise.
+4. Select output path and file name
+5. Denoised image is displayed and gets stored at specified output path.
 
