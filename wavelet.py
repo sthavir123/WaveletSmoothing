@@ -72,10 +72,6 @@ class BaseTransform:
     Transform class to call the Discrete Wavelet Transform on select wavelet based on
     the dimensions of the data
 
-    Attributes
-    ----------
-    __wavelet: WaveletTransform
-        object of the Wavelet class based on the wavelet name
     """
 
     def __init__(self, waveletName):
@@ -84,11 +80,6 @@ class BaseTransform:
     def getWaveletDefinition(self):
         """
         Returns the wavelet definition for the select wavelet
-
-        Returns
-        -------
-        object
-            object of the selected wavelet class
         """
         return self.__wavelet.__wavelet__
 
@@ -98,17 +89,6 @@ class BaseTransform:
         """
         Single Dimension wavelet decomposition based on the levels
 
-        Parameters
-        ----------
-        arrTime : array_like
-            input array signal in Time domain
-        level : int
-            level for the decomposition power of 2
-
-        Returns
-        -------
-        array_like
-            coefficients Frequency or the Hilbert domain
         """
         length = 0
         arrHilbert = arrTime.copy()
@@ -127,18 +107,6 @@ class BaseTransform:
     def waveRec1(self, arrHilbert, level):
         """
         Single Dimension wavelet reconstruction based on the levels
-
-        Parameters
-        ----------
-        arrHilbert : array_like
-            input array signal in Frequency or the Hilbert domain
-        level : int
-            level for the decomposition power of 2
-
-        Returns
-        -------
-        array_like
-            coefficients Time domain
         """
         arrTime = arrHilbert.copy()
         dataLength = len(arrTime)
@@ -161,15 +129,6 @@ class BaseTransform:
         """
         Two Dimension Multi-level wavelet decomposition based on the levels
 
-        Parameters
-        ----------
-        matTime : array_like
-            input matrix signal in Time domain
-
-        Returns
-        -------
-        array_like
-            coefficients Time domain
         """
         # shape
         noOfRows = len(matTime)
@@ -200,15 +159,6 @@ class BaseTransform:
         """
         Two Dimension Multi-level wavelet reconstruction based on the levels
 
-        Parameters
-        ----------
-        matHilbert : array_like
-            input matrix signal in Frequency or the Hilbert domain
-
-        Returns
-        -------
-        array_like
-            coefficients Time domain
         """
         noOfRows = len(matHilbert)
         noOfCols = len(matHilbert[0])

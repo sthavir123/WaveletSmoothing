@@ -30,12 +30,8 @@ def main(path,wavelet='db4',method='BayesShrink',levels=1,sigma=None,mode = 'sof
     img_denoised_ycrcb[:,:,1] = cr_denoised
     img_denoised_ycrcb[:,:,2] = cb_denoised
     
-    #convert back to RGB color spcae
+    #convert back to RGB color space
     img_denoised = cv2.cvtColor(img_denoised_ycrcb, cv2.COLOR_YCrCb2BGR)
     print(cv2.PSNR(img_denoised,img))
     return img_denoised
 #testing    
-img = main("Figure_1.png",sigma=100)
-cv2.imshow('smoothed_img',img)
-cv2.waitKey(0)
-cv2.destroyAllWindows()

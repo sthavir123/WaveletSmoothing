@@ -54,7 +54,7 @@ def _wavelet_threshold(image, wavelet, method=None, threshold=None,
     coeffs = pywt.wavedecn(image, wavelet=wavelet, level=wavelet_levels)
     # Detail coefficients at each decomposition level
     dcoeffs = coeffs[1:]
-    print(sigma)
+    
     if sigma is None:
         # Estimate the noise via the method in [2]_
         detail_coeffs = dcoeffs[-1]['d' * image.ndim]
@@ -69,8 +69,11 @@ def _wavelet_threshold(image, wavelet, method=None, threshold=None,
                          for level in dcoeffs]
         elif method == "VisuShrink":
             # The VisuShrink thresholds
+            detail_coeffs = dcoeffs[-1]['d' * image.ndim]
+            sigma = _sigma_est_dwt(detail_coeffs, distribution='Gaussian')
             threshold = _universal_thresh(image, sigma)
-        
+        elif method == "UniversalThreshold":
+            threshold = _universal_thresh(image,sigma)
 
     if np.isscalar(threshold):
         # A single threshold for all coefficient arrays

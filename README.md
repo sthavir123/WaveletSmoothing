@@ -12,4 +12,27 @@ TO PRESENT:
 
 •   Outputs with clear description of which parameters and input image were used to produce each output
 
+# Requirements:
+python3
+tkinter(for GUI)
+'''
+sudo apt install python3-tk
+'''
+## Libraries
+numpy
+'''
+pip install numpy
+'''
+pywt
+'''
+pip install PyWavelets
+'''
+cv2
+'''
+pip install opencv-python
+'''
+math
+
+
+
 
