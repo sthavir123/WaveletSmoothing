@@ -1,7 +1,7 @@
-import math
+
 import cv2
 import numpy as np
-import pywt
+
 from wavelet_thresholding import _wavelet_threshold
 
 def main(path,wavelet='db4',method='BayesShrink',levels=1,sigma=None,mode = 'soft'):
@@ -11,9 +11,10 @@ def main(path,wavelet='db4',method='BayesShrink',levels=1,sigma=None,mode = 'sof
     
     #resize the image so that dimensions are :
     #requuired due to pywt library issue for odd sized inputs during wavercn
-    k = int(img.shape[0]/2)
-    t = int(img.shape[1]/2)
-    img = cv2.resize(img,[k*2,t*2])
+    if img.shape[0]%2!=0 or img.shape[1]%2!=0:
+        k = int(img.shape[0]/2)
+        t = int(img.shape[1]/2)
+        img = cv2.resize(img,[k*2,t*2])
     # Convert the image to YCbCr color space
     img_ycrcb = cv2.cvtColor(img, cv2.COLOR_BGR2YCrCb)
 

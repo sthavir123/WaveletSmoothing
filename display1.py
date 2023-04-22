@@ -5,7 +5,9 @@ from main import main
 
 # Create the Tkinter window
 root = tk.Tk()
-
+window_height = 800
+window_width = 800
+root.geometry(f"{window_width}x{window_height}")
 file_path = filedialog.askopenfilename(title="Select Image", filetypes=[("All files", "*")])
 print(file_path)
 
@@ -46,8 +48,8 @@ cv2.imwrite(output_path, smoothed_image)
 
 
 # Set the window size
-window_width = smoothed_image.shape[0]
-window_height = smoothed_image.shape[1]
+window_width = smoothed_image.shape[1]
+window_height = smoothed_image.shape[0]
 root.geometry(f"{window_width}x{window_height}")
 
 # Load the images using PIL
