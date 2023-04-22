@@ -6,6 +6,7 @@ import scipy.stats
 def _bayes_thresh(details, var):
     """BayesShrink threshold for a zero-mean details coeff array."""
     # Equivalent to:  dvar = np.var(details) for 0-mean details array
+    
     dvar = np.mean(details*details)
     eps = np.finfo(details.dtype).eps
     thresh = var / np.sqrt(max(dvar - var, eps))
