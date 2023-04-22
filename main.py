@@ -4,10 +4,18 @@ import numpy as np
 
 from wavelet_thresholding import _wavelet_threshold
 
+def MSE(img1, img2):
+        squared_diff = (img1 -img2) ** 2
+        summed = np.sum(squared_diff)
+        num_pix = img1.shape[0] * img1.shape[1] #img1 and 2 should have same shape
+        err = summed / num_pix
+        return np.sqrt(err)
+
 def main(path,wavelet='db4',method='BayesShrink',levels=1,sigma=None,mode = 'soft'):
     print(path,wavelet,method,sigma,mode)
     # Load the noisy image
     img = cv2.imread(path)
+    #img2 = cv2.imread('./sample_images/russia_org.jpg')
     
     #resize the image so that dimensions are :
     #requuired due to pywt library issue for odd sized inputs during wavercn
@@ -33,6 +41,15 @@ def main(path,wavelet='db4',method='BayesShrink',levels=1,sigma=None,mode = 'sof
     
     #convert back to RGB color space
     img_denoised = cv2.cvtColor(img_denoised_ycrcb, cv2.COLOR_YCrCb2BGR)
-    print(cv2.PSNR(img_denoised,img))
+    
+    #print("MSE denoise : ",MSE(img_denoised,img2))
+    #print("MSE noise   : ",MSE(img,img2))
     return img_denoised
 #testing    
+# imgden = main(path = 'noisy_images/russia_s&p.jpg'
+#   ,method = 'VisuShrink'
+#   ,mode = 'soft'
+#   ,wavelet = 'db4'
+#   ,levels = 2
+#   ,sigma = None)
+# cv2.imwrite('output_images/result_s&p_vs.png',imgden)

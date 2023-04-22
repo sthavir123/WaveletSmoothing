@@ -44,8 +44,8 @@ python3 display1.py
   - method : BayesShrink
   - mode : soft
   - wavelet : db4
-  - levels : 3
-  - sigma : 2.0
+  - levels : 5
+  - sigma : 18.0
 
 2. result_guassian_ut.png:
   - path : ./noisy_images/russia_guassian.jpg
@@ -53,13 +53,13 @@ python3 display1.py
   - mode : soft
   - wavelet : db4
   - levels : 2
-  - sigma : 2.0
+  - sigma : 5.0
 
 3. result_guassian_vs.png:
   - path : ./noisy_images/russia_guassian.jpg
   - method : VisuShrink
   - mode : hard
-  - wavelet : db4
+  - wavelet : db6
   - levels : 2
   - sigma : None (click cancel in tinkter popup)
 
@@ -67,24 +67,24 @@ python3 display1.py
   - path : ./noisy_images/russia_s&p.jpg
   - method : BayesShrink
   - mode : soft
-  - wavelet : db4
-  - levels : 3
-  - sigma : 20.0
+  - wavelet : db6
+  - levels : 6
+  - sigma : 12.0
 
 5. result_s&p_ut.png:
   - path : ./noisy_images/russia_s&p.jpg
   - method : UniversalThreshold
   - mode : soft
   - wavelet : db4
-  - levels : 3
-  - sigma : 10.0
+  - levels : 2
+  - sigma : 15.5
 
 6. result_s&p_vs.png:
   - path : ./noisy_images/russia_s&p.jpg
   - method : VisuShrink
-  - mode : hard
+  - mode : soft
   - wavelet : db4
-  - levels : 4
+  - levels : 2
   - sigma : None (click cancel in tinkter popup)
 
 ## Notes
